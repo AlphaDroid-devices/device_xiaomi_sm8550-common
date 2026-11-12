@@ -103,6 +103,18 @@ on boot
     # High touch polling rate
     chown system system /sys/devices/virtual/touch/touch_dev/bump_sample_rate
     chmod 0660 /sys/devices/virtual/touch/touch_dev/bump_sample_rate
+    chown system system /sys/devices/virtual/touch/touch_dev/panel_orientation
+    chmod 0660 /sys/devices/virtual/touch/touch_dev/panel_orientation
+
+    # Edge rejection
+    chown system system /sys/devices/virtual/touch/touch_dev/grip_rejection
+    chmod 0660 /sys/devices/virtual/touch/touch_dev/grip_rejection
+    chown system system /sys/devices/virtual/touch/touch_dev/edge_deadzone
+    chmod 0660 /sys/devices/virtual/touch/touch_dev/edge_deadzone
+
+    # Charge current limit (XiaomiParts)
+    chown system system /sys/class/power_supply/battery/constant_charge_current
+    chmod 0664 /sys/class/power_supply/battery/constant_charge_current
 
 on post-fs-data
     mkdir /data/vendor/misc 01771 system system
@@ -225,8 +237,9 @@ on property:sys.boot_completed=1
     wait /sys/class/thermal/thermal_message/boot_complete
     write /sys/class/thermal/thermal_message/boot_complete 2
 
-    # Set thermal mode to mgame
-    write /sys/devices/virtual/thermal/thermal_message/sconfig 19
+    # Use the stock default thermal profile. The game profile (19) caps the
+    # charge current at 10A (~50W) as soon as the device reaches 33C.
+    write /sys/devices/virtual/thermal/thermal_message/sconfig 0
 
 on property:sys.boot_completed=1 && property:ro.build.type=user && property:ro.debuggable="1"
    chmod 0755 /sys/kernel/tracing

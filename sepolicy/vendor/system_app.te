@@ -1,3 +1,19 @@
 allow system_app hal_mlipay_hwservice:hwservice_manager find;
 
 binder_call(system_app, hal_mlipay_default)
+
+# XiaomiParts: thermal profiles
+allow system_app sysfs_thermal:dir r_dir_perms;
+allow system_app sysfs_thermal:file rw_file_perms;
+
+# XiaomiParts: high brightness mode
+allow system_app vendor_sysfs_graphics:dir search;
+allow system_app vendor_sysfs_graphics:file rw_file_perms;
+
+# XiaomiParts: edge rejection / panel orientation
+allow system_app vendor_sysfs_touch:dir search;
+allow system_app vendor_sysfs_touch:file rw_file_perms;
+
+# XiaomiParts: charge current limit
+allow system_app vendor_sysfs_battery_supply:dir r_dir_perms;
+allow system_app vendor_sysfs_battery_supply:file rw_file_perms;
